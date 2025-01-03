@@ -17,7 +17,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Trackie",
   description: "A dopamine-boosting progression-tracking application",
-  icons: "/trackie.png",
+  icons: {
+    icon: "trackie.png", 
+    shortcut: "trackie.png", 
+    apple: "trackie.png",
+  },
 };
 
 export default function RootLayout({
