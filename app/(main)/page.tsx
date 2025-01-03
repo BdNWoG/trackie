@@ -19,10 +19,21 @@ export default async function Home() {
                     </DialogTrigger>
                     <DialogContent>
                         <DialogTitle>
-                            <Button className="justify-between my-4">
+                            Add Goal
+                        </DialogTitle>
+                        <div className="flex flex-col space-y-5">
+                            <div className="flex flex-row items-center space-x-5">
+                                <span>Goal</span>
+                                <Input/>
+                            </div>
+                            <div className="flex flex-row items-center space-x-5">
+                                <span>Progress</span>
+                                <Input/>
+                            </div>
+                            <Button className="my-4">
                                 Add Goal
                             </Button>
-                        </DialogTitle>
+                        </div>
                     </DialogContent>
                 </Dialog>
             </div>
