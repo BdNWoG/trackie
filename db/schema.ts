@@ -1,7 +1,8 @@
-import { integer, pgTable, text } from "drizzle-orm/pg-core";
+import { integer, pgTable, serial, text } from "drizzle-orm/pg-core";
 
 export const goals = pgTable("goals", {
-    userId: text("user_id").primaryKey(),
+    id: serial("id").primaryKey(),
+    userId: text("user_id").notNull(),
     goal: text("goal").notNull(),
     progress: integer("progress").notNull(),
 })

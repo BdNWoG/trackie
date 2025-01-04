@@ -7,6 +7,10 @@ import { Button } from "./ui/button";
 export const TablePage = async () => {
     const goals = await getUserGoals();
 
+    if (!goals || goals.length === 0) {
+        return <div className="text-center mt-10">No goals found.</div>;
+    }
+
     return (
         <Table className="w-min justify-center items-start mx-auto">
             <TableHeader>

@@ -8,12 +8,17 @@ export const getUserGoals = cache(async() => {
     const { userId } = await auth();
 
     if (!userId) {
+        console.error("No userId found");
         return null;
     }
 
-    const data = await db.query.goals.findMany({
-        where: eq(goals.userId, userId),
-    });
-
-    return data;
+    try {
+        const data = await db.query.goals.findMany({
+            where: eq(goals.userId, userId),
+        });
+        return data;
+    } catch (error) {
+        console.error("Error fetching goals:", error);
+        return null;
+    }
 })
