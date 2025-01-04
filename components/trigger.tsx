@@ -7,12 +7,15 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { addGoal } from "@/app/api/addGoal";
+import { useRouter } from "next/navigation";
 
 export const Trigger = () => {
     const [goal, setGoal] = useState("");
     const [progress, setProgress] = useState("");
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const { userId } = useAuth(); 
+
+    const router = useRouter();
 
     const handleAddGoal = async () => {
         if (!userId) {
@@ -30,7 +33,7 @@ export const Trigger = () => {
             setGoal("");
             setProgress("");
             setIsDialogOpen(false);
-            alert("Goal added successfully!");
+            router.refresh();
         } catch (error) {
             console.error(error);
             alert("Error adding goal");

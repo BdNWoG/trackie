@@ -3,6 +3,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { getUserGoals } from "@/db/queries";
 import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
+import { Progress } from "./ui/progress";
 
 export const TablePage = async () => {
     const goals = await getUserGoals();
@@ -39,7 +40,7 @@ export const TablePage = async () => {
                             {goals.goal}
                         </TableCell>
                         <TableCell>
-                            {goals.progress}
+                            <Progress value={goals.progress}/>
                         </TableCell>
                         <TableCell>
                             <Input>
