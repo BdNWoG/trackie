@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
-import db from "@/db/drizzle";
-import { goals } from "@/db/schema";
+import { addGoal } from "@/app/api/addGoal";
 
 export const Trigger = () => {
     const [goal, setGoal] = useState("");
@@ -22,7 +21,7 @@ export const Trigger = () => {
         }
 
         try {
-            await db.insert(goals).values({
+            await addGoal({
                 userId,
                 goal,
                 progress: parseInt(progress, 10),
