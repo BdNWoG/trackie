@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useAuth } from "@clerk/nextjs";
+import db from "@/db/drizzle";
+import { goals } from "@/db/schema";
 
 export const Trigger = () => {
     const [goal, setGoal] = useState("");
@@ -20,17 +22,11 @@ export const Trigger = () => {
         }
 
         try {
-            const response = await fetch("/api/goals", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ userId, goal, progress: parseInt(progress) }),
+            await db.insert(goals).values({
+                userId,
+                goal,
+                progress: parseInt(progress, 10),
             });
-
-            if (!response.ok) {
-                throw new Error("Failed to add goal");
-            }
 
             setGoal("");
             setProgress("");
