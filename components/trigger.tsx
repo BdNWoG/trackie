@@ -1,13 +1,50 @@
-import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
+"use client";
+
+import { Dialog, DialogTrigger, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button"
-import { DialogTitle } from "@radix-ui/react-dialog";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { useAuth } from "@clerk/nextjs";
 
 export const Trigger = () => {
+    const [goal, setGoal] = useState("");
+    const [progress, setProgress] = useState("");
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const { userId } = useAuth(); 
+
+    const handleAddGoal = async () => {
+        if (!userId) {
+            alert("User not authenticated");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/goals", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ userId, goal, progress: parseInt(progress) }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to add goal");
+            }
+
+            setGoal("");
+            setProgress("");
+            setIsDialogOpen(false);
+            alert("Goal added successfully!");
+        } catch (error) {
+            console.error(error);
+            alert("Error adding goal");
+        }
+    };
+
     return (
-        <Dialog>
-            <DialogTrigger>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger className="bg-black text-white p-2 rounded-full">
                 <Plus/>
             </DialogTrigger>
             <DialogContent>
@@ -17,13 +54,13 @@ export const Trigger = () => {
                 <div className="flex flex-col space-y-5">
                     <div className="flex flex-row items-center space-x-5">
                         <span>Goal</span>
-                        <Input/>
+                        <Input value={goal} onChange={(e) => setGoal(e.target.value)}/>
                     </div>
                     <div className="flex flex-row items-center space-x-5">
                         <span>Progress</span>
-                        <Input/>
+                        <Input value={progress} onChange={(e) => setProgress(e.target.value)} type="number"/>
                     </div>
-                    <Button className="my-4">
+                    <Button className="my-4" onClick={handleAddGoal}>
                         Add Goal
                     </Button>
                 </div>
